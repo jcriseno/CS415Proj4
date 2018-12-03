@@ -64,7 +64,7 @@ def main():
     # Putting the contents of the file into the CAPACITY variable
     #capacity_input = raw_input("Enter file containing the capacity: ")
     #capacity_file = open(capacity_input)
-    capacity_file = open("p07_c.txt")
+    capacity_file = open("p00_c.txt")
     capacity = capacity_file.read()
     capacity_file.close()
     capacity = int(capacity)
@@ -74,7 +74,7 @@ def main():
     # Putting the contents of weights into the WEIGHTS list
     #weights_input = raw_input("Enter file containing the weights: ")
     #weights_file = open(weights_input, 'r')
-    weights_file = open("p07_w.txt")
+    weights_file = open("p00_w.txt")
     weights_file = weights_file.read()
     weights = re.findall(r"[-+]?\d*\.\d+|\d+", weights_file)
     weights = map(int, weights)
@@ -84,7 +84,7 @@ def main():
     # Putting the contents of values into the VALUES list
     #values_input = raw_input("Enter file containing the values: ")
     #values_file = open(values_input, 'r')
-    values_file = open("p07_v.txt")
+    values_file = open("p00_v.txt")
     values_file = values_file.read()
     values = re.findall(r"[-+]?\d*\.\d+|\d+", values_file)
     values = map(int, values)
@@ -102,7 +102,10 @@ def main():
     dynamic_end = time.time()
     dynamic_time = dynamic_end - dynamic_start
     print("Dynamic Programming Optimal value: " + str(dynamic_value))
-    print("Dynamic Programming Optimal subset: {" + str(dynamic_solution) + "}")
+    print("Dynamic Programming Optimal subset:"),
+    print("{"),
+    print(', '.join(map(str, dynamic_solution))),
+    print("}")
     print("Dynamic Programming Time Taken: " + str(dynamic_time))
     print ""
     
@@ -110,9 +113,12 @@ def main():
     gstart = time.clock()
     greedy_value, greedy_solution = greedy(capacity, weights, values, total_items)
     gstop = time.clock()
-    print "Greedy Approach Optimal value: ", greedy_value
-    print "Greedy Approach Optimal subset: ", greedy_solution
-    print "Greedy Approach Time Taken: ", gstop - gstart
+    print("Greedy Approach Optimal value: " + str(greedy_value))
+    print("Greedy Approach Optimal subset:"),
+    print("{"),
+    print(', '.join(map(str, greedy_solution))),
+    print("}")
+    print("Greedy Approach Time Taken: " + str(gstop - gstart))
 
 
     return 0
