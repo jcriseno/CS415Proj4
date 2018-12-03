@@ -30,25 +30,32 @@ def dynamic(capacity, weights, values, total_items):
 
 
 def greedy(capacity, weights, values, total_items):
-    
-    wprop = 0
-    take = []
-    print values[0]
+    optimal_value = 0
+    greedy_solution = []
+    wprop = 0 # "weight proportionate (to value)"
+    take = [] # init list for wprop
+    getcontext().prec = 6
+    # for loop will index from 0 - total_items
+    # adds wprop to take list
     for i in range(total_items):
-        #print(str.format('{0:6f}', (values[i]/weights[i])))
-        getcontext().prec = 6
-        #wprop = Decimal(7)/Decimal(3)
         wprop = Decimal(int(values[i]))/Decimal(int(weights[i]))
-        #wprop = values[i]/weights[i]
-        print(wprop)
         take.append(float(wprop))
-    
-    #while (capacity > 164)
-     #   most = 0
-        
-    print take
-    
-    return take
+
+
+    while capacity > 0:
+        most = max(take) #find max wprop from take list
+        most_index = take.index(most) #find index
+        capacity -= weights[most_index]
+        if capacity < 0:
+            break
+        optimal_value += values[most_index]
+        take.remove(most)
+        take.insert(most_index, 0)
+        greedy_solution.append(most_index + 1)
+
+    greedy_solution.sort()
+
+    return optimal_value, greedy_solution
 
 
 def main():
@@ -57,7 +64,7 @@ def main():
     # Putting the contents of the file into the CAPACITY variable
     #capacity_input = raw_input("Enter file containing the capacity: ")
     #capacity_file = open(capacity_input)
-    capacity_file = open("p01_c.txt")
+    capacity_file = open("p07_c.txt")
     capacity = capacity_file.read()
     capacity_file.close()
     capacity = int(capacity)
@@ -67,7 +74,7 @@ def main():
     # Putting the contents of weights into the WEIGHTS list
     #weights_input = raw_input("Enter file containing the weights: ")
     #weights_file = open(weights_input, 'r')
-    weights_file = open("p01_w.txt")
+    weights_file = open("p07_w.txt")
     weights_file = weights_file.read()
     weights = re.findall(r"[-+]?\d*\.\d+|\d+", weights_file)
     weights = map(int, weights)
@@ -77,7 +84,7 @@ def main():
     # Putting the contents of values into the VALUES list
     #values_input = raw_input("Enter file containing the values: ")
     #values_file = open(values_input, 'r')
-    values_file = open("p01_v.txt")
+    values_file = open("p07_v.txt")
     values_file = values_file.read()
     values = re.findall(r"[-+]?\d*\.\d+|\d+", values_file)
     values = map(int, values)
@@ -94,18 +101,17 @@ def main():
     dynamic_value, dynamic_solution = dynamic(capacity, weights, values, total_items)
     dynamic_end = time.time()
     dynamic_time = dynamic_end - dynamic_start
-    print("Dynamic Programming Optial value: " + str(dynamic_value))
-    print("Dynamic Programming Optimal subset: " + str(dynamic_solution))
+    print("Dynamic Programming Optimal value: " + str(dynamic_value))
+    print("Dynamic Programming Optimal subset: {" + str(dynamic_solution) + "}")
     print("Dynamic Programming Time Taken: " + str(dynamic_time))
+    print ""
     
     # Greedy Approach Solution
-    take_list = []
     gstart = time.clock()
-    greedy(capacity, weights, values, total_items)
+    greedy_value, greedy_solution = greedy(capacity, weights, values, total_items)
     gstop = time.clock()
-    print "Take list: ", take_list
-    print "Greedy Approach Optimal value: "
-    print "Greedy Approach Optimal subset: "
+    print "Greedy Approach Optimal value: ", greedy_value
+    print "Greedy Approach Optimal subset: ", greedy_solution
     print "Greedy Approach Time Taken: ", gstop - gstart
 
 
